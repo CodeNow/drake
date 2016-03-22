@@ -1,0 +1,37 @@
+{
+  "name": "drake",
+  "version": "0.0.0",
+  "description": "The 3rd Party Webhook Server",
+  "main": "http.js",
+  "private": true,
+  "scripts": {
+    "lint": "standard --verbose",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeNow/drake.git"
+  },
+  "author": "Ryan Sandor Richards <ryan@runnable.com> (http://www.runnable.com/)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/CodeNow/drake/issues"
+  },
+  "homepage": "https://github.com/CodeNow/drake#readme",
+  "dependencies": {
+    "bluebird": "^3.3.4",
+    "bunyan": "^1.8.0",
+    "error-cat": "^2.0.4",
+    "hapi": "^13.2.1",
+    "loadenv": "^2.1.0",
+    "monitor-dog": "^1.5.0",
+    "ponos": "^2.0.0"
+  },
+  "devDependencies": {
+    "code": "^2.1.1",
+    "lab": "^10.3.0",
+    "request": "^2.69.0",
+    "sinon": "^1.17.3",
+    "standard": "^6.0.8"
+  }
+}
