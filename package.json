@@ -27,13 +27,14 @@
     "joi": "^8.0.5",
     "loadenv": "^2.1.0",
     "monitor-dog": "^1.5.0",
-    "ponos": "^2.0.0"
+    "ponos": "^2.0.0",
+    "request": "^2.69.0",
+    "runnable-hermes": "^6.6.0"
   },
   "devDependencies": {
     "code": "^2.1.1",
     "github-webhook-fixtures": "^1.0.1",
     "lab": "^10.3.0",
-    "request": "^2.69.0",
     "sinon": "^1.17.3",
     "standard": "^6.0.8"
   }
