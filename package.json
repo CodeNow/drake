@@ -4,9 +4,13 @@
   "description": "The 3rd Party Webhook Server",
   "main": "http.js",
   "private": true,
+  "options": {
+    "mocha": "--timeout 10000 --bail --recursive --reporter spec"
+  },
   "scripts": {
     "lint": "standard --verbose",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "functional": "NODE_ENV=test mocha $npm_package_options_mocha --slow 1000 test/functional",
+    "test": "npm run lint && npm run functional"
   },
   "repository": {
     "type": "git",
@@ -32,9 +36,11 @@
     "runnable-hermes": "^6.6.0"
   },
   "devDependencies": {
-    "code": "^2.1.1",
+    "chai": "^3.3.0",
+    "chai-as-promised": "^5.1.0",
+    "debug": "^2.2.0",
     "github-webhook-fixtures": "^1.0.1",
-    "lab": "^10.3.0",
+    "mocha": "^2.3.3",
     "sinon": "^1.17.3",
     "standard": "^6.0.8"
   }
