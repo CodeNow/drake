@@ -68,6 +68,16 @@ describe('functional', () => {
         })
     })
 
+    it('should not retry on a redirect or client error from api', () => {
+      const stub = api.stub('POST', '/actions/github').returns(300)
+      const push = request.postAsync(webhookUrl, events.push)
+      return assert.isFulfilled(push)
+        .then(() => { return Promise.delay(300) })
+        .then(() => {
+          sinon.assert.calledOnce(stub)
+        })
+    })
+
     it('should respond to ping events', () => {
       const ping = request.postAsync(webhookUrl, events.ping)
       return assert.isFulfilled(ping)
