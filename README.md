@@ -1,10 +1,10 @@
 # drake
 ![Drake](https://raw.githubusercontent.com/CodeNow/drake/master/logo.jpg?token=AAI8oKLQgDfT7mzr_gIL4TYT1fBgbMQRks5W_HskwA%3D%3D)
-The Dopest Webhook Handler
 
 ## Overview
-Drake handles webhooks from 3rd-party repository services (e.g. github). Drake
-has two sides:
+Drake is the **dopest** webhook handler. Specifically, Drake handles webhooks
+from 3rd-party repository services (e.g. github, bitbucket, etc.) by way of his
+two natures:
 
 1. HTTP Server - handles webhook requests and enqueues handler jobs.
 2. Ponos Worker Server - a worker server that pulls webhook "push" jobs off of
