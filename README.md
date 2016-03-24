@@ -10,3 +10,12 @@ has two sides:
   RabbitMQ and ensures they are properly processed.
 
 Drake says "you used to call me on the cellphone."
+
+## RESTful Endpoints
+
+- `POST /github` - Handles GitHub Webhook requests
+
+## Queues
+
+- `github.push` - Handles github push events and ensures that the runnable API
+  gets the job done.
