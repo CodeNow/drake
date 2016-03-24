@@ -9,7 +9,9 @@
     "check-coverage": "istanbul check-coverage && echo 'Coverage check successful!'",
     "coverage": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- $npm_package_options_mocha test/ && npm run check-coverage",
     "functional": "NODE_ENV=test mocha $npm_package_options_mocha --slow 1000 test/functional",
-    "test": "npm run lint && npm run coverage"
+    "test": "npm run lint && npm run coverage",
+    "start-http": "node lib/http/index.js",
+    "start-worker": "node lib/worker/index.js"
   },
   "options": {
     "mocha": "--timeout 10000 --bail --recursive --reporter spec"
