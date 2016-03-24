@@ -5,12 +5,12 @@ require('loadenv')({ debugName: 'drake:test' })
 const chai = require('chai')
 chai.use(require('chai-as-promised'))
 const assert = chai.assert
-const expect = chai.expect
 const sinon = require('sinon')
 
 const MockAPI = require('../fixtures/mock-api')
 const Promise = require('bluebird')
 const events = require('../fixtures/github-events.js')
+const Joi = Promise.promisifyAll(require('joi'))
 const request = Promise.promisifyAll(require('request'))
 
 const api = Promise.promisifyAll(new MockAPI(7890))
@@ -91,6 +91,31 @@ describe('functional', () => {
         .then((data) => {
           assert.equal(data.statusCode, 400)
           assert.equal(data.body, 'Invalid Webhook Request')
+        })
+    })
+
+    it('should fatally reject malformed jobs', () => {
+      const stub = api.stub('POST', '/actions/github')
+      return Promise.resolve()
+        .then(() => {
+          hermes.publish('github.push', { deliveryId: 'fools' })
+          return Promise.delay(500)
+        })
+        .then(() => {
+          assert.equal(stub.callCount, 0)
+        })
+    })
+
+    it('should gracefully handle unexpected errors', () => {
+      sinon.stub(Joi, 'validateAsync', () => { throw Error('oopsies...') })
+      const ping = request.postAsync(webhookUrl, events.ping)
+      return assert.isFulfilled(ping)
+        .then((data) => {
+          assert.equal(data.statusCode, 500)
+          assert.equal(data.body, 'Internal Server Error')
+        })
+        .finally(() => {
+          Joi.validateAsync.restore()
         })
     })
   }) // end 'Github Webhook'
