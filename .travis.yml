@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "4"
+sudo: false
+services:
+  - rabbitmq
+before_install:
+  - npm install -g npm@latest
+before_script:
+  - ulimit -n 10240
+script:
+  - npm run test
