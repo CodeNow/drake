@@ -1,0 +1,61 @@
+{
+  "name": "drake",
+  "version": "0.0.0",
+  "description": "The 3rd Party Webhook Server",
+  "main": "http.js",
+  "private": true,
+  "scripts": {
+    "lint": "standard --verbose",
+    "check-coverage": "istanbul check-coverage && echo 'Coverage check successful!'",
+    "coverage": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- $npm_package_options_mocha test/ && npm run check-coverage",
+    "functional": "NODE_ENV=test mocha $npm_package_options_mocha --slow 1000 test/functional",
+    "test": "npm run lint && npm run coverage",
+    "start-http": "node lib/http/index.js",
+    "start-worker": "node lib/worker/index.js"
+  },
+  "options": {
+    "mocha": "--timeout 10000 --bail --recursive --reporter spec"
+  },
+  "standard": {
+    "globals": [
+      "describe",
+      "it",
+      "before",
+      "after",
+      "beforeEach",
+      "afterEach"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeNow/drake.git"
+  },
+  "author": "Ryan Sandor Richards <ryan@runnable.com> (http://www.runnable.com/)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/CodeNow/drake/issues"
+  },
+  "homepage": "https://github.com/CodeNow/drake#readme",
+  "dependencies": {
+    "101": "^1.5.0",
+    "bluebird": "^3.3.4",
+    "bunyan": "^1.8.0",
+    "error-cat": "^2.0.4",
+    "hapi": "^13.2.1",
+    "joi": "^8.0.5",
+    "loadenv": "^2.1.0",
+    "monitor-dog": "^1.5.0",
+    "ponos": "^2.0.0",
+    "request": "^2.69.0",
+    "runnable-hermes": "^6.6.0"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "chai-as-promised": "^5.1.0",
+    "debug": "^2.2.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.3.3",
+    "sinon": "^1.17.3",
+    "standard": "^6.0.8"
+  }
+}
