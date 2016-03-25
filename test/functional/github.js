@@ -7,6 +7,7 @@ chai.use(require('chai-as-promised'))
 const assert = chai.assert
 const sinon = require('sinon')
 
+const ErrorCat = require('error-cat')
 const MockAPI = require('../fixtures/mock-api')
 const Promise = require('bluebird')
 const events = require('../fixtures/github-events.js')
@@ -21,6 +22,16 @@ const workerServer = require('../../lib/worker/server')
 
 describe('functional', () => {
   const webhookUrl = `http://localhost:${process.env.PORT}/github`
+
+  describe('Hermes Client', () => {
+    it('should handle unexpected errors', () => {
+      const err = new Error('whoopsies')
+      sinon.stub(ErrorCat, 'report')
+      hermes.emit('error', err)
+      sinon.assert.calledWith(ErrorCat.report, err)
+      ErrorCat.report.restore()
+    })
+  })
 
   describe('Github Webhook', () => {
     before(() => {
