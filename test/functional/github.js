@@ -79,6 +79,24 @@ describe('functional', () => {
         })
     })
 
+    it('should not report on a "not a runnable user" error', () => {
+      sinon.stub(workerServer.errorCat, 'report')
+      const stub = api.stub('POST', '/actions/github').returns({
+        status: 400,
+        body: 'Commit author/committer is not a Runnable user'
+      })
+      const push = request.postAsync(webhookUrl, events.push)
+      return assert.isFulfilled(push)
+        .then(() => { return Promise.delay(300) })
+        .then(() => {
+          sinon.assert.calledOnce(stub)
+          assert.equal(workerServer.errorCat.report.callCount, 0)
+        })
+        .finally(() => {
+          workerServer.errorCat.report.restore()
+        })
+    })
+
     it('should not retry on a redirect or client error from api', () => {
       const stub = api.stub('POST', '/actions/github').returns(300)
       const push = request.postAsync(webhookUrl, events.push)
