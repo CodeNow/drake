@@ -12,8 +12,8 @@ const request = Promise.promisifyAll(require('request'))
 
 const api = Promise.promisifyAll(new MockAPI(7890))
 
-const hermes = require('../../lib/hermes')
 const httpServer = require('../../lib/http/server')
+const rabbitmq = require('../../lib/rabbitmq')
 const workerServer = require('../../lib/worker/server')
 
 describe('functional', () => {
@@ -21,7 +21,7 @@ describe('functional', () => {
 
   describe('Version Endpoint', () => {
     before(() => {
-      return hermes.connectAsync()
+      return rabbitmq.connect()
         .then(() => { return workerServer.start() })
         .then(() => { return httpServer.start() })
         .then(() => { return api.startAsync() })
@@ -31,6 +31,7 @@ describe('functional', () => {
       return api.stopAsync()
         .then(() => { return httpServer.stop() })
         .then(() => { return workerServer.stop() })
+        .then(() => { return rabbitmq.disconnect() })
     })
 
     it('should respond with the version and name', () => {
