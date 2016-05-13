@@ -45,7 +45,7 @@
     "joi": "^8.0.5",
     "loadenv": "^2.1.0",
     "monitor-dog": "^1.5.0",
-    "ponos": "github:runnable/ponos#three-master",
+    "ponos": "^3.0.0-rc1",
     "request": "^2.69.0"
   },
   "devDependencies": {

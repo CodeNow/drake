@@ -127,7 +127,7 @@ describe('functional', () => {
       const stub = api.stub('POST', '/actions/github')
       return Promise.resolve()
         .then(() => {
-          rabbitmq.channel.sendToQueue('github.push', new Buffer(JSON.stringify({ deliveryId: 'fools' })))
+          rabbitmq.publishToQueue('github.push', { deliveryId: 'fools' })
           return Promise.delay(500)
         })
         .then(() => {
