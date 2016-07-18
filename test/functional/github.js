@@ -7,7 +7,6 @@ chai.use(require('chai-as-promised'))
 const assert = chai.assert
 const sinon = require('sinon')
 
-const ErrorCat = require('error-cat')
 const MockAPI = require('../fixtures/mock-api')
 const Promise = require('bluebird')
 const events = require('../fixtures/github-events.js')
@@ -16,26 +15,16 @@ const request = Promise.promisifyAll(require('request'))
 
 const api = Promise.promisifyAll(new MockAPI(7890))
 
-const hermes = require('../../lib/hermes')
+const rabbitmq = require('../../lib/rabbitmq')
 const httpServer = require('../../lib/http/server')
 const workerServer = require('../../lib/worker/server')
 
 describe('functional', () => {
   const webhookUrl = `http://localhost:${process.env.PORT}/github`
 
-  describe('Hermes Client', () => {
-    it('should handle unexpected errors', () => {
-      const err = new Error('whoopsies')
-      sinon.stub(ErrorCat, 'report')
-      hermes.emit('error', err)
-      sinon.assert.calledWith(ErrorCat.report, err)
-      ErrorCat.report.restore()
-    })
-  })
-
   describe('Github Webhook', () => {
     before(() => {
-      return hermes.connectAsync()
+      return rabbitmq.publisher.connect()
         .then(() => { return workerServer.start() })
         .then(() => { return httpServer.start() })
         .then(() => { return api.startAsync() })
@@ -137,7 +126,7 @@ describe('functional', () => {
       const stub = api.stub('POST', '/actions/github')
       return Promise.resolve()
         .then(() => {
-          hermes.publish('github.push', { deliveryId: 'fools' })
+          rabbitmq.publishGitHubPush({ deliveryId: 'fools' })
           return Promise.delay(500)
         })
         .then(() => {

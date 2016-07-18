@@ -12,7 +12,7 @@ const request = Promise.promisifyAll(require('request'))
 
 const api = Promise.promisifyAll(new MockAPI(7890))
 
-const hermes = require('../../lib/hermes')
+const rabbitmq = require('../../lib/rabbitmq')
 const httpServer = require('../../lib/http/server')
 const workerServer = require('../../lib/worker/server')
 
@@ -21,7 +21,7 @@ describe('functional', () => {
 
   describe('Version Endpoint', () => {
     before(() => {
-      return hermes.connectAsync()
+      return rabbitmq.publisher.connect()
         .then(() => { return workerServer.start() })
         .then(() => { return httpServer.start() })
         .then(() => { return api.startAsync() })
