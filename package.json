@@ -40,14 +40,13 @@
     "101": "^1.5.0",
     "bluebird": "^3.3.4",
     "bunyan": "^1.8.0",
-    "error-cat": "^2.0.4",
+    "error-cat": "^3.0.0",
     "hapi": "^13.2.1",
     "joi": "^8.0.5",
     "loadenv": "^2.1.0",
     "monitor-dog": "^1.5.0",
-    "ponos": "^2.0.0",
-    "request": "^2.69.0",
-    "runnable-hermes": "^6.6.0"
+    "ponos": "^4.2.1",
+    "request": "^2.69.0"
   },
   "devDependencies": {
     "chai": "^3.3.0",
