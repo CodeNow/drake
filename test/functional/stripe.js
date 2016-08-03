@@ -7,7 +7,6 @@ chai.use(require('chai-as-promised'))
 const assert = chai.assert
 const sinon = require('sinon')
 
-const MockAPI = require('../fixtures/mock-api')
 const Promise = require('bluebird')
 const events = require('../fixtures/stripe-events.js')
 const Joi = Promise.promisifyAll(require('joi'))
@@ -40,12 +39,12 @@ describe('Stripe Webhook Functional', () => {
     publishEventStub.restore()
   })
 
- it('should respond to unhanlded webhook events with a 204', () => {
-   const push = request.postAsync({
-     url: webhookUrl,
-     body: events.unhandled,
-     json: true
-   })
+  it('should respond to unhanlded webhook events with a 204', () => {
+    const push = request.postAsync({
+      url: webhookUrl,
+      body: events.unhandled,
+      json: true
+    })
     return assert.isFulfilled(push)
       .then((data) => {
         assert.equal(data.statusCode, 204)
