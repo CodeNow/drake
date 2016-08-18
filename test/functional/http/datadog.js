@@ -4,8 +4,8 @@ const chai = require('chai')
 const Promise = require('bluebird')
 const sinon = require('sinon')
 
-const httpServer = require('../../lib/http/server')
-const rabbitmq = require('../../lib/rabbitmq')
+const httpServer = require('../../../lib/http/server')
+const rabbitmq = require('../../../lib/rabbitmq')
 
 chai.use(require('chai-as-promised'))
 const assert = chai.assert
@@ -13,7 +13,7 @@ const request = Promise.promisifyAll(require('request'))
 const webhookUrl = `http://localhost:${process.env.PORT}/datadog`
 
 describe('Datadog Webhook Functional', () => {
-  before('Start HTTP and Worker Server', () => {
+  before('Start HTTP Server', () => {
     return httpServer.start()
   })
 
