@@ -46,7 +46,7 @@
     "joi": "^8.0.5",
     "loadenv": "^2.1.0",
     "monitor-dog": "^1.5.0",
-    "ponos": "^4.6.0",
+    "ponos": "^5.0.0",
     "request": "^2.69.0"
   },
   "devDependencies": {
