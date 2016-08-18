@@ -6,7 +6,6 @@ const sinon = require('sinon')
 
 const httpServer = require('../../lib/http/server')
 const rabbitmq = require('../../lib/rabbitmq')
-const workerServer = require('../../lib/worker/server')
 
 chai.use(require('chai-as-promised'))
 const assert = chai.assert
@@ -16,7 +15,6 @@ const webhookUrl = `http://localhost:${process.env.PORT}/datadog`
 describe('Datadog Webhook Functional', () => {
   before('Start HTTP and Worker Server', () => {
     return httpServer.start()
-      .then(() => workerServer.start())
   })
 
   beforeEach('Stub out RabbitMQ', () => {
@@ -25,7 +23,6 @@ describe('Datadog Webhook Functional', () => {
 
   after('Stop HTTP and Worker Server', () => {
     return httpServer.stop()
-      .then(() => workerServer.stop())
   })
 
   afterEach('Restore RabbitMQ', () => {
