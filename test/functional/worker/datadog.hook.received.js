@@ -18,7 +18,7 @@ const testPublisher = new RabbitMQ({
 describe('Datadog worker Functional', () => {
   before('Start worker Server', () => {
     return testPublisher.connect()
-      .then(() => { WorkerServer.start() })
+      .then(() => { return WorkerServer.start() })
   })
 
   beforeEach('Stub out RabbitMQ', () => {
@@ -31,7 +31,7 @@ describe('Datadog worker Functional', () => {
 
   after('Stop worker and Worker Server', () => {
     return testPublisher.disconnect()
-      .then(() => { WorkerServer.stop() })
+      .then(() => { return WorkerServer.stop() })
   })
 
   it('should respond to malformed webhook event with a 400', (done) => {
