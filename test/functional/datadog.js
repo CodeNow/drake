@@ -1,7 +1,6 @@
 'use strict'
 require('loadenv')({ debugName: 'drake:test' })
 const chai = require('chai')
-chai.use(require('chai-as-promised'))
 const Promise = require('bluebird')
 const sinon = require('sinon')
 
@@ -9,6 +8,7 @@ const httpServer = require('../../lib/http/server')
 const rabbitmq = require('../../lib/rabbitmq')
 const workerServer = require('../../lib/worker/server')
 
+chai.use(require('chai-as-promised'))
 const assert = chai.assert
 const request = Promise.promisifyAll(require('request'))
 const webhookUrl = `http://localhost:${process.env.PORT}/datadog`
