@@ -126,7 +126,7 @@ describe('Github Webhook Functional', () => {
     const stub = api.stub('POST', '/actions/github')
     return Promise.resolve()
       .then(() => {
-        rabbitmq.publishToQueue('github.push', { deliveryId: 'fools' })
+        rabbitmq.publishTask('github.push', { deliveryId: 'fools' })
         return Promise.delay(500)
       })
       .then(() => {
