@@ -31,7 +31,11 @@ module.exports = {
     'object': 'event',
     'api_version': '2015-10-12',
     'created': 1470185308,
-    'data': {},
+    'data': {
+      'object': {
+        'customer': 'cus_9MINKbWDTLUkV3'
+      }
+    },
     'livemode': false,
     'pending_webhooks': 0,
     'request': 'req_8w5kR3LRuAl6hU',
