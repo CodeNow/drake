@@ -77,7 +77,8 @@ describe('Stripe Webhook Functional', () => {
           publishEventStub,
           'stripe.invoice.created',
           {
-            stripeEventId: events['invoice.created'].id
+            stripeEventId: events['invoice.created'].id,
+            stripeCustomerId: events['invoice.created'].data.object.customer
           }
         )
       })
@@ -97,7 +98,8 @@ describe('Stripe Webhook Functional', () => {
           publishEventStub,
           'stripe.invoice.payment-failed',
           {
-            stripeEventId: events['invoice.payment_failed'].id
+            stripeEventId: events['invoice.payment_failed'].id,
+            stripeCustomerId: undefined
           }
         )
       })
@@ -117,7 +119,8 @@ describe('Stripe Webhook Functional', () => {
           publishEventStub,
           'stripe.invoice.payment-succeeded',
           {
-            stripeEventId: events['invoice.payment_succeeded'].id
+            stripeEventId: events['invoice.payment_succeeded'].id,
+            stripeCustomerId: undefined
           }
         )
       })
