@@ -75,5 +75,27 @@ describe('Functional', () => {
           sinon.assert.calledWith(rabbitmq.publishTask, 'datadog.hook.received', testPayload)
         })
     })
+
+    it('should publish job if re-triggered', () => {
+      const testPayload = {
+        id: '123123',
+        event_title: 'world champ',
+        event_msg: 'Lots Of Data',
+        date: '1738',
+        alert_transition: 'Re-Triggered',
+        secret: process.env.DATADOG_SECRET
+      }
+      const push = request.postAsync({
+        url: webhookUrl,
+        body: testPayload,
+        json: true
+      })
+      return assert.isFulfilled(push)
+        .then((data) => {
+          assert.equal(data.statusCode, 200)
+          sinon.assert.calledOnce(rabbitmq.publishTask)
+          sinon.assert.calledWith(rabbitmq.publishTask, 'datadog.hook.received', testPayload)
+        })
+    })
   })
 })
