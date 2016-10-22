@@ -6,11 +6,8 @@ const chai = require('chai')
 chai.use(require('chai-as-promised'))
 const assert = chai.assert
 
-const MockAPI = require('../fixtures/mock-api')
 const Promise = require('bluebird')
 const request = Promise.promisifyAll(require('request'))
-
-const api = Promise.promisifyAll(new MockAPI(7890))
 
 const httpServer = require('../../lib/http/server')
 const rabbitmq = require('../../lib/rabbitmq')
@@ -24,12 +21,10 @@ describe('functional', () => {
       return rabbitmq.connect()
         .then(() => { return workerServer.start() })
         .then(() => { return httpServer.start() })
-        .then(() => { return api.startAsync() })
     })
 
     after(() => {
-      return api.stopAsync()
-        .then(() => { return httpServer.stop() })
+      return httpServer.stop()
         .then(() => { return workerServer.stop() })
         .then(() => { return rabbitmq.disconnect() })
     })
