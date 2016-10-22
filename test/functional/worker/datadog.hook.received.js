@@ -10,7 +10,7 @@ const WorkerServer = require('../../../lib/worker/server')
 chai.use(require('chai-as-promised'))
 const testPublisher = new RabbitMQ({
   name: process.env.APP_NAME,
-  tasks: [
+  events: [
     'datadog.hook.received'
   ]
 })
@@ -39,7 +39,7 @@ describe('Datadog worker Functional', () => {
   })
 
   it('should respond to malformed webhook event with a 400', (done) => {
-    testPublisher.publishTask('datadog.hook.received', {
+    testPublisher.publishEvent('datadog.hook.received', {
       event_msg: '"%[RUNNABLE_DATA]type=disk_filled,test1=val[RUNNABLE_DATA]%"'
     })
 
