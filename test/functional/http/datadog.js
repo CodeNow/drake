@@ -19,7 +19,7 @@ describe('Functional', () => {
   })
 
   beforeEach('Stub out RabbitMQ', () => {
-    sinon.stub(rabbitmq, 'publishTask')
+    sinon.stub(rabbitmq, 'publishEvent')
   })
 
   after('Stop HTTP and Worker Server', () => {
@@ -27,7 +27,7 @@ describe('Functional', () => {
   })
 
   afterEach('Restore RabbitMQ', () => {
-    rabbitmq.publishTask.restore()
+    rabbitmq.publishEvent.restore()
   })
 
   describe('Health check', () => {
@@ -71,8 +71,8 @@ describe('Functional', () => {
       return assert.isFulfilled(push)
         .then((data) => {
           assert.equal(data.statusCode, 200)
-          sinon.assert.calledOnce(rabbitmq.publishTask)
-          sinon.assert.calledWith(rabbitmq.publishTask, 'datadog.hook.received', testPayload)
+          sinon.assert.calledOnce(rabbitmq.publishEvent)
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'datadog.hook.received', testPayload)
         })
     })
 
@@ -93,8 +93,8 @@ describe('Functional', () => {
       return assert.isFulfilled(push)
         .then((data) => {
           assert.equal(data.statusCode, 200)
-          sinon.assert.calledOnce(rabbitmq.publishTask)
-          sinon.assert.calledWith(rabbitmq.publishTask, 'datadog.hook.received', testPayload)
+          sinon.assert.calledOnce(rabbitmq.publishEvent)
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'datadog.hook.received', testPayload)
         })
     })
   })

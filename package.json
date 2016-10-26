@@ -47,7 +47,7 @@
     "keypather": "^2.0.1",
     "loadenv": "^2.1.0",
     "monitor-dog": "^1.5.0",
-    "ponos": "^5.6.1",
+    "ponos": "^5.7.1",
     "request": "^2.69.0"
   },
   "devDependencies": {

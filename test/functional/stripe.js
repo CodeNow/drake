@@ -22,8 +22,9 @@ describe('Stripe Webhook Functional', () => {
   let publishEventStub
 
   before('Start HTTP and Worker Server', () => {
-    return httpServer.start()
-      .then(() => workerServer.start())
+    return rabbitmq.connect()
+      .then(() => { return workerServer.start() })
+      .then(() => { return httpServer.start() })
   })
 
   beforeEach('Stub out RabbitMQ', () => {
@@ -32,7 +33,8 @@ describe('Stripe Webhook Functional', () => {
 
   after('Stop HTTP and Worker Server', () => {
     return httpServer.stop()
-      .then(() => workerServer.stop())
+      .then(() => { return workerServer.stop() })
+      .then(() => { return rabbitmq.disconnect() })
   })
 
   afterEach('Restore RabbitMQ', () => {
