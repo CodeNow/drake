@@ -15,11 +15,10 @@ Drake responds to the following HTTP endpoints (esp. on his cellphone):
 
 - `POST /github` - Handles GitHub Webhook requests
 
-## Queues
-Drake pushes to and reads from the following queues (ever since you left the city):
+## Events
+Drake emit following events
 
-- `github.push` - Handles github push events and ensures that the runnable API
-  gets the job done.
+- `github.pushed` - take payload from github webhook and send's it as an event.
 
 ## Testing
 Currently, Drake is tested via **functional tests**. Drake reminds you that
