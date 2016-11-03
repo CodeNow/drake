@@ -95,7 +95,7 @@ describe('datadog.hook.received unit test', function () {
     return assert.isFulfilled(Worker.task(testJob))
       .then(() => {
         sinon.assert.calledOnce(rabbitmq.publishEvent)
-        const finalPayload = Object.assign({}, testData, { githubOrgId: testData.org })
+        const finalPayload = Object.assign({}, testData, { githubOrgId: parseInt(testData.org, 10) })
         sinon.assert.calledWith(rabbitmq.publishEvent, 'dock.unresponsive', finalPayload)
       })
   })
