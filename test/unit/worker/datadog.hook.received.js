@@ -78,6 +78,28 @@ describe('datadog.hook.received unit test', function () {
       })
   })
 
+  it('should enhance payload with githubOrgId', () => {
+    const testData = {
+      test1: 'hop',
+      type: 'unresponsive',
+      org: '123123123'
+    }
+    const testMsg = Object.keys(testData).reduce((prev, cur) => {
+      console.log('prev', prev, prev.push)
+      prev.push(`${cur}=${testData[cur]}`)
+      return prev
+    }, []).join(',')
+    const testJob = {
+      event_msg: `%%%\n[RUNNABLE_DATA]${testMsg}[RUNNABLE_DATA]\n@webhook-gamma-drake\n\n...%%%`
+    }
+    return assert.isFulfilled(Worker.task(testJob))
+      .then(() => {
+        sinon.assert.calledOnce(rabbitmq.publishEvent)
+        const finalPayload = Object.assign({}, testData, { githubOrgId: parseInt(testData.org, 10) })
+        sinon.assert.calledWith(rabbitmq.publishEvent, 'dock.unresponsive', finalPayload)
+      })
+  })
+
   it('should WorkerStopError if bad event', () => {
     const testData = {
       type: 'I think something is going on, please help'
