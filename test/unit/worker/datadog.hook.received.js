@@ -24,7 +24,6 @@ describe('datadog.hook.received unit test', function () {
       type: 'disk_filled'
     }
     const testMsg = Object.keys(testData).reduce((prev, cur) => {
-      console.log('prev', prev, prev.push)
       prev.push(`${cur}=${testData[cur]}`)
       return prev
     }, []).join(',')
@@ -44,7 +43,6 @@ describe('datadog.hook.received unit test', function () {
       type: 'memory_exhausted'
     }
     const testMsg = Object.keys(testData).reduce((prev, cur) => {
-      console.log('prev', prev, prev.push)
       prev.push(`${cur}=${testData[cur]}`)
       return prev
     }, []).join(',')
@@ -64,7 +62,6 @@ describe('datadog.hook.received unit test', function () {
       type: 'unresponsive'
     }
     const testMsg = Object.keys(testData).reduce((prev, cur) => {
-      console.log('prev', prev, prev.push)
       prev.push(`${cur}=${testData[cur]}`)
       return prev
     }, []).join(',')
@@ -85,7 +82,6 @@ describe('datadog.hook.received unit test', function () {
       org: '123123123'
     }
     const testMsg = Object.keys(testData).reduce((prev, cur) => {
-      console.log('prev', prev, prev.push)
       prev.push(`${cur}=${testData[cur]}`)
       return prev
     }, []).join(',')
@@ -105,7 +101,6 @@ describe('datadog.hook.received unit test', function () {
       type: 'I think something is going on, please help'
     }
     const testMsg = Object.keys(testData).reduce((prev, cur) => {
-      console.log('prev', prev, prev.push)
       prev.push(`${cur}=${testData[cur]}`)
       return prev
     }, []).join(',')

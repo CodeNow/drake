@@ -41,6 +41,7 @@ describe('Functional', () => {
         })
     })
   })
+
   describe('Datadog Webhook', () => {
     it('should respond to malformed webhook event with a 400', () => {
       const push = request.postAsync({
