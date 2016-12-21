@@ -13,26 +13,23 @@ describe('errorHandaler unit test', () => {
       code: codeStub
     }
   }
-  beforeEach((done) => {
+  beforeEach(() => {
     codeStub = sinon.stub()
-    done()
   })
 
-  it('should return 400 if joi error', (done) => {
+  it('should return 400 if joi error', () => {
     errorHandaler({
       isJoi: true
     }, replyStub)
     sinon.assert.calledOnce(codeStub)
     sinon.assert.calledWith(codeStub, 400)
-    done()
   })
 
-  it('should return 500 if not joi error', (done) => {
+  it('should return 500 if not joi error', () => {
     errorHandaler({
       isJoi: false
     }, replyStub)
     sinon.assert.calledOnce(codeStub)
     sinon.assert.calledWith(codeStub, 500)
-    done()
   })
 })

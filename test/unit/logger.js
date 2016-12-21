@@ -7,7 +7,7 @@ chai.use(require('chai-as-promised'))
 const assert = chai.assert
 
 describe('logger unit test', function () {
-  it('should remove commits fromjob', (done) => {
+  it('should remove commits fromjob', () => {
     const testJob = {
       payload: {
         commits: ['some', 'commits']
@@ -15,6 +15,5 @@ describe('logger unit test', function () {
     }
     const out = logger._serializers.job(testJob)
     assert.deepEqual({ payload: {} }, out)
-    done()
   })
 }) // end logger unit test
