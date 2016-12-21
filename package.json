@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "lint": "standard --verbose",
-    "check-coverage": "istanbul check-coverage --statement 97 --functions 100 --branches 92 --lines 97 && echo 'Coverage check successful!'",
+    "check-coverage": "istanbul check-coverage --statement 100 --functions 100 --branches 100 --lines 100 && echo 'Coverage check successful!'",
     "coverage": "NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- $npm_package_options_mocha test/ && npm run check-coverage",
     "functional": "NODE_ENV=test mocha $npm_package_options_mocha --slow 1000 test/functional",
     "test": "npm run lint && npm run coverage",
