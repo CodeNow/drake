@@ -39,7 +39,7 @@ describe('Datadog worker Functional', () => {
       })
   })
 
-  it('should fire disk filled event', (done) => {
+  it('should fire disk filled event', () => {
     testPublisher.publishEvent('prometheus.alert.received', {
       status: 'firing',
       labels: {
@@ -63,6 +63,5 @@ describe('Datadog worker Functional', () => {
         host: 'http://10.2.2.2:4242'
       })
     })
-    .asCallback(done)
   })
 }) // end 'Datadog worker'

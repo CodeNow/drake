@@ -30,7 +30,7 @@ describe('Functional', () => {
     rabbitmq.publishEvent.restore()
   })
 
-  describe('Datadog Webhook', () => {
+  describe('prometheus Webhook', () => {
     it('should respond to malformed webhook event with a 400', () => {
       const push = request.postAsync({
         url: webhookUrl,
