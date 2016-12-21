@@ -11,29 +11,25 @@ const assert = chai.assert
 
 describe('prometheus.alert.received unit test', function () {
   describe('_getEventNameFromType', () => {
-    it('should return dock.disk.filled', (done) => {
+    it('should return dock.disk.filled', () => {
       const out = Worker._getEventNameFromType('disk_filled')
       assert.equal(out, 'dock.disk.filled')
-      done()
     })
 
-    it('should return dock.memory.exhausted', (done) => {
+    it('should return dock.memory.exhausted', () => {
       const out = Worker._getEventNameFromType('memory_exhausted')
       assert.equal(out, 'dock.memory.exhausted')
-      done()
     })
 
-    it('should return dock.unresponsive', (done) => {
+    it('should return dock.unresponsive', () => {
       const out = Worker._getEventNameFromType('unresponsive')
       assert.equal(out, 'dock.unresponsive')
-      done()
     })
 
-    it('should throw worker stop', (done) => {
+    it('should throw worker stop', () => {
       assert.throws(() => {
         Worker._getEventNameFromType('not-a-thing')
       }, WorkerStopError)
-      done()
     })
   })
 
@@ -48,21 +44,21 @@ describe('prometheus.alert.received unit test', function () {
       Worker._getEventNameFromType.restore()
     })
 
-    it('should do nothing if not firing', (done) => {
-      Worker.task({
+    it('should do nothing if not firing', () => {
+      return Worker.task({
         status: 'resolved'
       })
       .then(() => {
         sinon.assert.notCalled(rabbitmq.publishEvent)
         sinon.assert.notCalled(Worker._getEventNameFromType)
       })
-      .asCallback(done)
     })
 
-    it('should publish correct event', (done) => {
+    it('should publish correct event', () => {
       const testEventName = 'test.event.fired'
       Worker._getEventNameFromType.returns(testEventName)
-      Worker.task({
+
+      return Worker.task({
         status: 'firing',
         labels: {
           type: 'disk',
@@ -77,7 +73,6 @@ describe('prometheus.alert.received unit test', function () {
           host: 'http://10.0.0.1:4242'
         })
       })
-      .asCallback(done)
     })
   }) // end task
 }) // end prometheus.alert.received unit test
