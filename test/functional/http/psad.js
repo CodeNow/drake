@@ -44,7 +44,8 @@ describe('Functional', () => {
 
     it('should publish job', () => {
       const testAlert = {
-        containerId: '123123'
+        containerId: '123123',
+        hostnames: '10.0.0.1 172.2.3.5'
       }
       const push = request.postAsync({
         url: webhookUrl,
