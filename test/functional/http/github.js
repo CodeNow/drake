@@ -133,6 +133,12 @@ describe('Functional', () => {
     })
 
     it('should publish job when a new branch is created', () => {
+      const payload = request.postAsync({
+        url: webhookUrl,
+        body: testPayloadForPullRequest,
+        json: true,
+        headers: headers
+      })
       headers['x-github-event'] = 'create'
       const push = request.postAsync({
         url: webhookUrl,
@@ -146,12 +152,18 @@ describe('Functional', () => {
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.branch.created', {
             deliveryId: deliveryId,
-            payload: testPayloadPush
+            payload: payload
           })
         })
     })
 
     it('should publish job when a branch is deleted', () => {
+      const payload = request.postAsync({
+        url: webhookUrl,
+        body: testPayloadForPullRequest,
+        json: true,
+        headers: headers
+      })
       headers['x-github-event'] = 'delete'
       const push = request.postAsync({
         url: webhookUrl,
@@ -165,7 +177,7 @@ describe('Functional', () => {
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.branch.deleted', {
             deliveryId: deliveryId,
-            payload: testPayloadPush
+            payload: payload
           })
         })
     })
