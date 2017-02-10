@@ -1,8 +1,9 @@
 'use strict'
 require('loadenv')({ debugName: 'drake:test' })
 const chai = require('chai')
-const sinon = require('sinon')
+const Promise = require('bluebird')
 const RabbitMQ = require('ponos/lib/rabbitmq')
+const sinon = require('sinon')
 
 const rabbitmq = require('../../../lib/rabbitmq')
 const WorkerServer = require('../../../lib/worker/server')
@@ -11,7 +12,7 @@ chai.use(require('chai-as-promised'))
 const testPublisher = new RabbitMQ({
   name: process.env.APP_NAME,
   events: [
-    'datadog.hook.received'
+    'prometheus.alert.received'
   ]
 })
 
@@ -38,32 +39,29 @@ describe('Datadog worker Functional', () => {
       })
   })
 
-  it('should send disk filled event', (done) => {
-    testPublisher.publishEvent('datadog.hook.received', {
-      event_msg: '"%[RUNNABLE_DATA]type=disk_filled,test1=val[RUNNABLE_DATA]%"'
+  it('should fire disk filled event', () => {
+    testPublisher.publishEvent('prometheus.alert.received', {
+      status: 'firing',
+      labels: {
+        githubOrgId: '123',
+        hostIp: '10.2.2.2',
+        type: 'disk_filled'
+      }
     })
 
-    const check = (cb) => {
-      if (rabbitmq.publishEvent.callCount !== 1) {
-        setTimeout(() => {
-          check(cb)
-        }, 0)
-      } else {
-        cb()
+    return Promise.try(function loop () {
+      if (!rabbitmq.publishEvent.calledOnce) {
+        return Promise.delay(5).then(loop)
       }
-    }
-
-    check(() => {
-      try {
-        sinon.assert.calledOnce(rabbitmq.publishEvent)
-        sinon.assert.calledWith(rabbitmq.publishEvent, 'dock.disk.filled', {
-          type: 'disk_filled',
-          test1: 'val'
-        })
-      } catch (err) {
-        return done(err)
-      }
-      done()
+    })
+    .then(() => {
+      sinon.assert.calledOnce(rabbitmq.publishEvent)
+      sinon.assert.calledWith(rabbitmq.publishEvent, 'dock.disk.filled', {
+        githubOrgId: '123',
+        hostIp: '10.2.2.2',
+        type: 'disk_filled',
+        host: 'http://10.2.2.2:4242'
+      })
     })
   })
 }) // end 'Datadog worker'
