@@ -38,7 +38,7 @@ describe('Functional', () => {
       'user-agent': 'GitHub.wow'
     }
 
-    beforeEach(() => {
+    beforeEach('Setup githubPayload', () => {
       testGithubPayload = {
         action: 'opened',
         number: 11,
