@@ -61,11 +61,11 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledTwice(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.opened', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
         })
@@ -84,7 +84,7 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
         })
@@ -102,11 +102,11 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledTwice(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.opened', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
         })
@@ -133,7 +133,7 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pushed', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testPayloadPush
           })
         })
@@ -168,7 +168,7 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.branch.created', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
         })
@@ -187,7 +187,7 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.branch.deleted', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testGithubPayload
           })
         })
