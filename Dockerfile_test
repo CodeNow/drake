@@ -1,0 +1,8 @@
+FROM node:4.6
+RUN wget https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /wait.sh
+RUN chmod +x /wait.sh
+ADD ["./package.json", "/drake/package.json"]
+WORKDIR /drake
+RUN npm install
+ADD [".", "/drake"]
+CMD /wait.sh $RABBITMQ_HOSTNAME:5672 -t 30 && npm run test

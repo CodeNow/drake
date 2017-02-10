@@ -31,24 +31,51 @@ describe('Functional', () => {
 
   describe('Github Webhook', () => {
     const deliveryId = '1'
-    const testPayloadForPullRequest = {
-      action: 'opened',
-      number: 11,
-      pull_request: {},
-      repository: {},
-      organization: {},
-      sender: {}
-    }
+    let testGithubPayload
     const headers = {
       'x-github-event': 'pull_request',
       'x-github-delivery': deliveryId,
       'user-agent': 'GitHub.wow'
     }
 
+    beforeEach('Setup githubPayload', () => {
+      testGithubPayload = {
+        action: 'opened',
+        number: 11,
+        pull_request: {},
+        repository: {},
+        organization: {},
+        sender: {}
+      }
+    })
+
     it('should publish job when a pull request is opened', () => {
       const push = request.postAsync({
         url: webhookUrl,
-        body: testPayloadForPullRequest,
+        body: testGithubPayload,
+        json: true,
+        headers: headers
+      })
+      return assert.isFulfilled(push)
+        .then((data) => {
+          assert.equal(data.statusCode, 201)
+          sinon.assert.calledTwice(rabbitmq.publishEvent)
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.opened', {
+            deliveryId,
+            payload: testGithubPayload
+          })
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
+            deliveryId,
+            payload: testGithubPayload
+          })
+        })
+    })
+
+    it('should publish job when a pull request is closed', () => {
+      testGithubPayload.action = 'closed'
+      const push = request.postAsync({
+        url: webhookUrl,
+        body: testGithubPayload,
         json: true,
         headers: headers
       })
@@ -56,9 +83,9 @@ describe('Functional', () => {
         .then((data) => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
-          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.opened', {
-            deliveryId: deliveryId,
-            payload: testPayloadForPullRequest
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
+            deliveryId,
+            payload: testGithubPayload
           })
         })
     })
@@ -66,17 +93,21 @@ describe('Functional', () => {
     it('should publish job if re-triggered', () => {
       const push = request.postAsync({
         url: webhookUrl,
-        body: testPayloadForPullRequest,
+        body: testGithubPayload,
         json: true,
         headers: headers
       })
       return assert.isFulfilled(push)
         .then((data) => {
           assert.equal(data.statusCode, 201)
-          sinon.assert.calledOnce(rabbitmq.publishEvent)
+          sinon.assert.calledTwice(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.opened', {
-            deliveryId: deliveryId,
-            payload: testPayloadForPullRequest
+            deliveryId,
+            payload: testGithubPayload
+          })
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
+            deliveryId,
+            payload: testGithubPayload
           })
         })
     })
@@ -102,7 +133,7 @@ describe('Functional', () => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
           sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pushed', {
-            deliveryId: deliveryId,
+            deliveryId,
             payload: testPayloadPush
           })
         })
@@ -124,11 +155,49 @@ describe('Functional', () => {
         })
     })
 
+    it('should publish job when a new branch is created', () => {
+      headers['x-github-event'] = 'create'
+      const push = request.postAsync({
+        url: webhookUrl,
+        body: testGithubPayload,
+        json: true,
+        headers: headers
+      })
+      return assert.isFulfilled(push)
+        .then((data) => {
+          assert.equal(data.statusCode, 201)
+          sinon.assert.calledOnce(rabbitmq.publishEvent)
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.branch.created', {
+            deliveryId,
+            payload: testGithubPayload
+          })
+        })
+    })
+
+    it('should publish job when a branch is deleted', () => {
+      headers['x-github-event'] = 'delete'
+      const push = request.postAsync({
+        url: webhookUrl,
+        body: testGithubPayload,
+        json: true,
+        headers: headers
+      })
+      return assert.isFulfilled(push)
+        .then((data) => {
+          assert.equal(data.statusCode, 201)
+          sinon.assert.calledOnce(rabbitmq.publishEvent)
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.branch.deleted', {
+            deliveryId,
+            payload: testGithubPayload
+          })
+        })
+    })
+
     it('should ignore the event ifs not a event we care about', () => {
       headers['x-github-event'] = 'hello'
       const push = request.postAsync({
         url: webhookUrl,
-        body: testPayloadForPullRequest,
+        body: testGithubPayload,
         json: true,
         headers: headers
       })
@@ -143,7 +212,7 @@ describe('Functional', () => {
       delete headers['x-github-event']
       const push = request.postAsync({
         url: webhookUrl,
-        body: testPayloadForPullRequest,
+        body: testGithubPayload,
         json: true,
         headers: headers
       })
