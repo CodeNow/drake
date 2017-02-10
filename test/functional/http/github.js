@@ -64,7 +64,7 @@ describe('Functional', () => {
             deliveryId: deliveryId,
             payload: testGithubPayload
           })
-          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.event', {
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
             deliveryId: deliveryId,
             payload: testGithubPayload
           })
@@ -83,7 +83,7 @@ describe('Functional', () => {
         .then((data) => {
           assert.equal(data.statusCode, 201)
           sinon.assert.calledOnce(rabbitmq.publishEvent)
-          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.event', {
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
             deliveryId: deliveryId,
             payload: testGithubPayload
           })
@@ -105,7 +105,7 @@ describe('Functional', () => {
             deliveryId: deliveryId,
             payload: testGithubPayload
           })
-          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.event', {
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.changed', {
             deliveryId: deliveryId,
             payload: testGithubPayload
           })
