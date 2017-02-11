@@ -73,7 +73,7 @@ describe('Functional', () => {
           .then((data) => {
             assert.equal(data.statusCode, 201)
             sinon.assert.calledOnce(rabbitmq.publishEvent)
-            sinon.assert.calledWith(rabbitmq.publishEvent, `github.pull-request.${event}`, {
+            sinon.assert.calledWith(rabbitmq.publishEvent, `github.pull-request.${event.replace(/_/, '-')}`, {
               deliveryId,
               payload: testGithubPayload
             })
