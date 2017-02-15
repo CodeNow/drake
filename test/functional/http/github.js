@@ -81,7 +81,7 @@ describe('Functional', () => {
       })
     })
 
-    it('should publish job when a pull request is synchronize', () => {
+    it('should publish job when a pull request synchronize event received', () => {
       testGithubPayload.action = 'synchronize'
       const push = request.postAsync({
         url: webhookUrl,
