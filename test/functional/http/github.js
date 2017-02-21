@@ -81,6 +81,25 @@ describe('Functional', () => {
       })
     })
 
+    it('should publish job when a pull request synchronize event received', () => {
+      testGithubPayload.action = 'synchronize'
+      const push = request.postAsync({
+        url: webhookUrl,
+        body: testGithubPayload,
+        json: true,
+        headers: headers
+      })
+      return assert.isFulfilled(push)
+        .then((data) => {
+          assert.equal(data.statusCode, 201)
+          sinon.assert.calledOnce(rabbitmq.publishEvent)
+          sinon.assert.calledWith(rabbitmq.publishEvent, 'github.pull-request.synchronized', {
+            deliveryId,
+            payload: testGithubPayload
+          })
+        })
+    })
+
     it('should not publish job when pull request action its not one of the options', () => {
       testGithubPayload.action = 'foo'
       const push = request.postAsync({
